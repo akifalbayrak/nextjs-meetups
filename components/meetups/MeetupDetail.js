@@ -6,8 +6,6 @@ export default function MeetupDetail(props) {
             <h1>{props.title}</h1>
             <address>
                 <p>Address: {props.address}</p>
-                <p>Date: {props.date}</p>
-                <p>Time: {props.time}</p>
             </address>
             <p>{props.description}</p>
         </section>
