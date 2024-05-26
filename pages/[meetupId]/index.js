@@ -4,6 +4,10 @@ import { Fragment } from "react";
 import Head from "next/head";
 
 export default function MeetupDetailsPage(props) {
+    if (!props.meetupData) {
+        return <p>Loading...</p>;
+    }
+
     return (
         <Fragment>
             <Head>
@@ -25,19 +29,24 @@ export default function MeetupDetailsPage(props) {
 
 export async function getStaticProps(context) {
     const meetupId = context.params.meetupId;
+    let selectedMeetup = null;
 
-    const client = await MongoClient.connect(
-        "mongodb+srv://akif:Xa5f9stib7d72D1E@cluster0.pizeaf2.mongodb.net/meetups?retryWrites=true&w=majority&appName=Cluster0"
-    );
+    try {
+        const client = await MongoClient.connect(
+            "mongodb+srv://akif:Xa5f9stib7d72D1E@cluster0.pizeaf2.mongodb.net/meetups?retryWrites=true&w=majority&appName=Cluster0"
+        );
 
-    const db = client.db();
-    const meetupsCollection = db.collection("meetups");
+        const db = client.db();
+        const meetupsCollection = db.collection("meetups");
 
-    const selectedMeetup = await meetupsCollection.findOne({
-        _id: new ObjectId(meetupId),
-    });
+        selectedMeetup = await meetupsCollection.findOne({
+            _id: new ObjectId(meetupId),
+        });
 
-    client.close();
+        client.close();
+    } catch (error) {
+        console.error("Error connecting to MongoDB or fetching data:", error);
+    }
 
     if (!selectedMeetup) {
         return {
@@ -59,16 +68,22 @@ export async function getStaticProps(context) {
 }
 
 export async function getStaticPaths() {
-    const client = await MongoClient.connect(
-        "mongodb+srv://akif:Xa5f9stib7d72D1E@cluster0.pizeaf2.mongodb.net/meetups?retryWrites=true&w=majority&appName=Cluster0"
-    );
+    let meetups = [];
 
-    const db = client.db();
-    const meetupsCollection = db.collection("meetups");
+    try {
+        const client = await MongoClient.connect(
+            "mongodb+srv://akif:Xa5f9stib7d72D1E@cluster0.pizeaf2.mongodb.net/meetups?retryWrites=true&w=majority&appName=Cluster0"
+        );
 
-    const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
+        const db = client.db();
+        const meetupsCollection = db.collection("meetups");
 
-    client.close();
+        meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
+
+        client.close();
+    } catch (error) {
+        console.error("Error connecting to MongoDB or fetching data:", error);
+    }
 
     return {
         fallback: true,
