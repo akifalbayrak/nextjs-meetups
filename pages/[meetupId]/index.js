@@ -1,3 +1,4 @@
+import { MongoClient, ObjectId } from "mongodb";
 import MeetupDetails from "../../components/meetups/MeetupDetail";
 
 export default function MeetupDetailsPage(props) {
@@ -14,33 +15,49 @@ export default function MeetupDetailsPage(props) {
 export async function getStaticProps(context) {
     const meetupId = context.params.meetupId;
 
+    const client = await MongoClient.connect(
+        "mongodb+srv://akif:Xa5f9stib7d72D1E@cluster0.pizeaf2.mongodb.net/meetups?retryWrites=true&w=majority&appName=Cluster0"
+    );
+
+    const db = client.db();
+
+    const meetupsCollection = db.collection("meetups");
+
+    const selectedMeetup = await meetupsCollection.findOne({
+        _id: ObjectId(meetupId),
+    });
+
+    client.close();
+
     return {
         props: {
             meetupData: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/9/91/SamuelTaylorColeridge.jpg",
-                id: meetupId,
-                title: "A First Meetup",
-                address: "123, Some Street, Some City, Some Country",
-                description:
-                    "This is a first meetup. It is a very important meetup. It is a very important meetup because it is the first one.",
+                id: selectedMeetup._id.toString(),
+                title: selectedMeetup.title,
+                address: selectedMeetup.address,
+                image: selectedMeetup.image,
+                description: selectedMeetup.description,
             },
         },
     };
 }
 export async function getStaticPaths() {
+    const client = await MongoClient.connect(
+        "mongodb+srv://akif:Xa5f9stib7d72D1E@cluster0.pizeaf2.mongodb.net/meetups?retryWrites=true&w=majority&appName=Cluster0"
+    );
+
+    const db = client.db();
+
+    const meetupsCollection = db.collection("meetups");
+
+    const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
+
+    client.close();
+
     return {
         fallback: false,
-        paths: [
-            {
-                params: {
-                    meetupId: "m1",
-                },
-            },
-            {
-                params: {
-                    meetupId: "m2",
-                },
-            },
-        ],
+        paths: meetups.map((meetup) => ({
+            params: { meetupId: meetup._id.toString() },
+        })),
     };
 }
