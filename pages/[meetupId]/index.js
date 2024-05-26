@@ -31,7 +31,6 @@ export async function getStaticProps(context) {
     );
 
     const db = client.db();
-
     const meetupsCollection = db.collection("meetups");
 
     const selectedMeetup = await meetupsCollection.findOne({
@@ -39,6 +38,12 @@ export async function getStaticProps(context) {
     });
 
     client.close();
+
+    if (!selectedMeetup) {
+        return {
+            notFound: true,
+        };
+    }
 
     return {
         props: {
@@ -52,13 +57,13 @@ export async function getStaticProps(context) {
         },
     };
 }
+
 export async function getStaticPaths() {
     const client = await MongoClient.connect(
         "mongodb+srv://akif:Xa5f9stib7d72D1E@cluster0.pizeaf2.mongodb.net/meetups?retryWrites=true&w=majority&appName=Cluster0"
     );
 
     const db = client.db();
-
     const meetupsCollection = db.collection("meetups");
 
     const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
