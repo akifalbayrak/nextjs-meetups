@@ -40,6 +40,7 @@
   overflow: hidden;
   z-index: 1000;
   animation: slideDown 0.2s ease-out forwards;
+  text-align: center;
 }
 
 .dropdownList li {
@@ -54,6 +55,12 @@
   color: #fff;
   outline: none;
 }
+
+.selected {
+  background-color: var(--primary-color);
+  font-weight: 700;
+}
+
 
 @keyframes slideDown {
   0% {

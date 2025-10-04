@@ -21,8 +21,12 @@ export default function ThemeProvider({ children }: ThemeProviderProps) {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") as Theme | null;
+
     if (savedTheme === "light" || savedTheme === "dark") {
       setTheme(savedTheme);
+    } else {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setTheme(prefersDark ? "dark" : "light");
     }
   }, []);
 

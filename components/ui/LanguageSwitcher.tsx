@@ -12,7 +12,8 @@ function LanguageSwitcher() {
     setOpen(false);
   };
 
-  const currentLabel = i18n.language === "tr" ? "Türkçe (TR)" : "English (EN)";
+const currentLang = i18n.language.split("-")[0];
+const currentLabel = currentLang === "tr" ? "Türkçe (TR)" : "English (EN)";
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | Event) => {
@@ -36,8 +37,8 @@ function LanguageSwitcher() {
       </button>
       {open && (
         <ul className={styles.dropdownList}>
-          <li onClick={() => changeLanguage("en")}>English (EN)</li>
-          <li onClick={() => changeLanguage("tr")}>Türkçe (TR)</li>
+          <li className={currentLang === "en" ? styles.selected : ""} onClick={() => changeLanguage("en")}>English (EN)</li>
+          <li className={currentLang === "tr" ? styles.selected : ""} onClick={() => changeLanguage("tr")}>Türkçe (TR)</li>
         </ul>
       )}
     </div>
