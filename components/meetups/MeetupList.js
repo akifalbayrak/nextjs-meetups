@@ -1,16 +1,27 @@
 import MeetupItem from './MeetupItem';
 import classes from './MeetupList.module.css';
+import { useTranslation } from 'react-i18next';
 
-function MeetupList(props) {
+function MeetupList({ meetups }) {
+  const { t } = useTranslation();
+
+  if (!meetups || meetups.length === 0) {
+    return (
+      <p className={classes.noMeetups}>
+        {t('meetupList.noMeetups')}
+      </p>
+    );
+  }
+
   return (
     <ul className={classes.list}>
-      {props.meetups.map((meetup) => (
+      {meetups.map(({ id, image, title, address }) => (
         <MeetupItem
-          key={meetup.id}
-          id={meetup.id}
-          image={meetup.image}
-          title={meetup.title}
-          address={meetup.address}
+          key={id}
+          id={id}
+          image={image}
+          title={title}
+          address={address}
         />
       ))}
     </ul>

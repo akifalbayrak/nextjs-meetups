@@ -1,53 +1,54 @@
-import { Fragment } from "react";
 import MeetupList from "../components/meetups/MeetupList";
 import { MongoClient } from "mongodb";
 import Head from "next/head";
+import { useTranslation } from "react-i18next";
 
-export default function HomePage(props) {
+export default function HomePage({ meetups }) {
+    const { t } = useTranslation();
     return (
-        <Fragment>
+        <>
             <Head>
-                <title>Meetups</title>
+                <title>{t("homePage.title")}</title>
+                <meta name="description" content={t("homePage.description")} />
                 <meta
-                    name="description"
-                    content="Browse a huge list of highly active meetups"
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
                 />
             </Head>
-            <MeetupList meetups={props.meetups} />
-        </Fragment>
+            <MeetupList meetups={meetups} />
+        </>
     );
 }
 
 export async function getStaticProps() {
-    if (!process.env.MONGODB_URI) {
-        console.error('MONGODB_URI not set');
+    const uri = process.env.MONGODB_URI;
+
+    if (!uri) {
+        console.error("MONGODB_URI environment variable is not set!");
         return { props: { meetups: [] }, revalidate: 10 };
     }
 
     let client;
-    let meetups = [];
-    try {
-        client = await MongoClient.connect(process.env.MONGODB_URI);
-        const db = client.db();
 
+    try {
+        client = await MongoClient.connect(uri);
+        const db = client.db();
         const meetupsCollection = db.collection("meetups");
 
-        meetups = await meetupsCollection.find().toArray();
-    } catch (error) {
-        console.error('Error fetching meetups:', error);
-    } finally {
-        if (client) client.close();
-    }
+        const meetupsData = await meetupsCollection.find().toArray();
 
-    return {
-        props: {
-            meetups: meetups.map((meetup) => ({
-                title: meetup.title,
-                address: meetup.address,
-                image: meetup.image,
-                id: meetup._id.toString(),
-            })),
-        },
-        revalidate: 10,
-    };
+        const meetups = meetupsData.map((meetup) => ({
+            id: meetup._id.toString(),
+            title: meetup.title,
+            address: meetup.address,
+            image: meetup.image,
+        }));
+
+        return { props: { meetups }, revalidate: 10 };
+    } catch (error) {
+        console.error("Failed to fetch meetups:", error);
+        return { props: { meetups: [] }, revalidate: 10 };
+    } finally {
+        if (client) await client.close();
+    }
 }

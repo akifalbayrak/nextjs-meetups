@@ -1,39 +1,225 @@
 .header {
-  width: 100%;
-  height: 5rem;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  background-color: #77002e;
-  padding: 0 10%;
+  align-items: center;
+  padding: 1.2rem 2rem;
+  background-color: var(--card-bg);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: all 0.3s ease;
+  flex-wrap: wrap;
 }
 
 .logo {
-  font-size: 2rem;
-  color: white;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+  z-index: 110;
 }
 
-.header ul {
+.logo:hover,
+.logo:focus {
+  color: var(--primary-hover);
+  transform: scale(1.05);
+}
+
+.logoImage {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  transition: transform 0.3s ease;
+}
+
+.logoImage:hover,
+.logoImage:focus {
+  transform: scale(1.1);
+}
+
+.menuToggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  margin-left: auto;
+  z-index: 120;
+  width: 30px;
+  height: 30px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.menuToggle:focus {
+  outline-offset: 3px;
+  outline-color: var(--primary-color);
+  outline-style: solid;
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+  display: block;
+  background-color: var(--text-color);
+  height: 3px;
+  width: 100%;
+  border-radius: 2px;
+  position: absolute;
+  left: 0;
+  transition: all 0.3s ease;
+}
+
+.hamburger {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.hamburger::before {
+  content: "";
+  top: -10px;
+}
+
+.hamburger::after {
+  content: "";
+  top: 10px;
+}
+
+.menuToggle.open .hamburger {
+  background-color: transparent;
+}
+
+.menuToggle.open .hamburger::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.menuToggle.open .hamburger::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+.navList {
+  display: flex;
+  gap: 1.5rem;
   list-style: none;
   margin: 0;
   padding: 0;
+  align-items: center;
+  transition: max-height 0.35s ease, opacity 0.35s ease;
+  max-height: 1000px; /* large enough to show all */
+  opacity: 1;
+  overflow: visible;
+  width: auto;
+}
+
+.navItem {
   display: flex;
-  align-items: baseline;
+  align-items: center;
 }
 
-.header li {
-  margin-left: 3rem;
-}
-
-.header a {
+.navLink {
   text-decoration: none;
-  font-size: 1.5rem;
-  color: #fcb8d2;
+  font-weight: 500;
+  color: var(--text-color);
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  position: relative;
 }
 
-.header a:hover,
-.header a:active,
-.header a.active {
-  color: white;
+.navLink:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+  color: #fff;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0%;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.navLink:hover::after,
+.navLink:focus::after {
+  width: 100%;
+}
+
+.active {
+  color: #ffffff !important;
+  background-color: var(--primary-color);
+  font-weight: 600;
+  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.15);
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .menuToggle {
+    display: block;
+  }
+
+  .navList {
+    flex-direction: column;
+    width: 100%;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    background-color: var(--card-bg);
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    transition: max-height 0.35s ease, opacity 0.35s ease;
+  }
+
+  .navList.open {
+    max-height: 500px; /* enough to show all items */
+    opacity: 1;
+    overflow: visible;
+  }
+
+  .navItem {
+    width: 100%;
+    justify-content: center;
+    padding: 0.5rem 0;
+  }
+
+  .navLink {
+    width: 100%;
+    text-align: center;
+    padding: 0.75rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 0.8rem 1rem;
+  }
+  .logo {
+    font-size: 1.25rem;
+  }
+  .logoImage {
+    width: 30px;
+    height: 30px;
+  }
+  .navList {
+    gap: 0.75rem;
+  }
+  .navLink {
+    font-size: 0.95rem;
+  }
 }

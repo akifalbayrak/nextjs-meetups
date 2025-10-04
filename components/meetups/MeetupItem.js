@@ -1,29 +1,39 @@
 import { useRouter } from "next/router";
 import Card from "../ui/Card";
 import classes from "./MeetupItem.module.css";
+import { useTranslation } from "react-i18next";
 
-function MeetupItem(props) {
-    const router = useRouter();
+function MeetupItem({ id, image, title, address }) {
+  const router = useRouter();
+  const { t } = useTranslation();
 
-    function showDetailsHandler() {
-        router.push("/" + props.id);
-    }
-    return (
-        <li className={classes.item}>
-            <Card>
-                <div className={classes.image}>
-                    <img src={props.image} alt={props.title} />
-                </div>
-                <div className={classes.content}>
-                    <h3>{props.title}</h3>
-                    <address>{props.address}</address>
-                </div>
-                <div className={classes.actions}>
-                    <button onClick={showDetailsHandler}>Show Details</button>
-                </div>
-            </Card>
-        </li>
-    );
+  function showDetailsHandler() {
+    router.push("/" + id);
+  }
+
+  return (
+    <li className={classes.item}>
+      <Card>
+        <article className={classes.article}>
+          <div className={classes.image}>
+            <img src={image} alt={t('meetupItem.imageAlt', { title })} />
+          </div>
+          <div className={classes.content}>
+            <h3>{title}</h3>
+            <address>{address}</address>
+          </div>
+          <div className={classes.actions}>
+            <button
+              onClick={showDetailsHandler}
+              aria-label={t('meetupItem.ariaLabel', { title })}
+            >
+              {t('meetupItem.showDetails')}
+            </button>
+          </div>
+        </article>
+      </Card>
+    </li>
+  );
 }
 
 export default MeetupItem;
