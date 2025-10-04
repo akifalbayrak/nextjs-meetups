@@ -6,13 +6,16 @@ import Head from "next/head";
 export default function NewMeetupPage() {
     const router = useRouter();
 
-    async function addMeetupHandler(enteredMeetupData) {
-        await fetch("/api/new-meetup", {
+     async function addMeetupHandler(enteredMeetupData) {
+        const response = await fetch("/api/new-meetup", {
             method: "POST",
             body: enteredMeetupData,
         });
 
-        router.push("/");
+        if (response.ok) {
+            router.push("/");
+        }
+
     }
 
     return (

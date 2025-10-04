@@ -9,7 +9,18 @@ export const config = {
   },
 };
 
-const upload = multer();
+const upload = multer({
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10 MB
+  },
+  fileFilter(req, file, cb) {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only .jpg and .png images are allowed'));
+    }
+  },
+});
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -19,7 +30,12 @@ export default async function handler(req, res) {
   upload.single('image')(req, {}, async (err) => {
     if (err) {
       console.error(err);
-      return res.status(500).json({ message: 'Multer error', error: err.message });
+      if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({ message: 'File size should not exceed 10MB' });
+        }
+      }
+      return res.status(400).json({ message: err.message || 'Upload error' });
     }
 
     try {

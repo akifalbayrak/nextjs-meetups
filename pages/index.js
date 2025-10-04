@@ -18,17 +18,6 @@ export default function HomePage(props) {
     );
 }
 
-// export async function getServerSideProps(context) {
-//     const req = context.req;
-//     const res = context.res;
-
-//     return {
-//         props: {
-//             meetups: DUMMY_MEETUPS,
-//         },
-//     };
-// }
-
 export async function getStaticProps() {
     if (!process.env.MONGODB_URI) {
         console.error('MONGODB_URI not set');
