@@ -1,7 +1,6 @@
-import { useRef } from 'react';
-
-import Card from '../ui/Card';
-import classes from './NewMeetupForm.module.css';
+import { useRef } from "react";
+import Card from "../ui/Card";
+import classes from "./NewMeetupForm.module.css";
 
 function NewMeetupForm(props) {
   const titleInputRef = useRef();
@@ -12,17 +11,16 @@ function NewMeetupForm(props) {
   function submitHandler(event) {
     event.preventDefault();
 
-    const enteredTitle = titleInputRef.current.value;
-    const enteredImage = imageInputRef.current.value;
-    const enteredAddress = addressInputRef.current.value;
-    const enteredDescription = descriptionInputRef.current.value;
+    const meetupData = new FormData();
+    meetupData.append("title", titleInputRef.current.value);
+    meetupData.append("address", addressInputRef.current.value);
+    meetupData.append("description", descriptionInputRef.current.value);
 
-    const meetupData = {
-      title: enteredTitle,
-      image: enteredImage,
-      address: enteredAddress,
-      description: enteredDescription,
-    };
+    if (imageInputRef.current.files.length > 0) {
+      meetupData.append("image", imageInputRef.current.files[0]);
+    } else {
+      console.error("Dosya seçilmemiş veya ref hatalı");
+    }
 
     props.onAddMeetup(meetupData);
   }
@@ -31,23 +29,42 @@ function NewMeetupForm(props) {
     <Card>
       <form className={classes.form} onSubmit={submitHandler}>
         <div className={classes.control}>
-          <label htmlFor='title'>Meetup Title</label>
-          <input type='text' required id='title' ref={titleInputRef} />
-        </div>
-        <div className={classes.control}>
-          <label htmlFor='image'>Meetup Image</label>
-          <input type='url' required id='image' ref={imageInputRef} />
-        </div>
-        <div className={classes.control}>
-          <label htmlFor='address'>Address</label>
-          <input type='text' required id='address' ref={addressInputRef} />
-        </div>
-        <div className={classes.control}>
-          <label htmlFor='description'>Description</label>
-          <textarea
-            id='description'
+          <label htmlFor="title">Meetup Title</label>
+          <input
+            type="text"
             required
-            rows='5'
+            id="title"
+            name="title"
+            ref={titleInputRef}
+          />
+        </div>
+        <div className={classes.control}>
+          <label htmlFor="image">Meetup Image</label>
+          <input
+            type="file"
+            required
+            id="image"
+            name="image"
+            ref={imageInputRef}
+          />
+        </div>
+        <div className={classes.control}>
+          <label htmlFor="address">Address</label>
+          <input
+            type="text"
+            required
+            id="address"
+            name="address"
+            ref={addressInputRef}
+          />
+        </div>
+        <div className={classes.control}>
+          <label htmlFor="description">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            required
+            rows="5"
             ref={descriptionInputRef}
           ></textarea>
         </div>
