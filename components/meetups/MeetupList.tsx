@@ -1,8 +1,13 @@
+import { Meetup } from '../../types/meetup';
 import MeetupItem from './MeetupItem';
 import classes from './MeetupList.module.css';
 import { useTranslation } from 'react-i18next';
 
-function MeetupList({ meetups }) {
+interface MeetupListProps {
+  meetups: Meetup[];
+}
+
+function MeetupList({ meetups }: MeetupListProps) {
   const { t } = useTranslation();
 
   if (!meetups || meetups.length === 0) {

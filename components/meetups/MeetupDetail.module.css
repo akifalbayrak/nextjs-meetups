@@ -1,31 +1,75 @@
 .detail {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1.5rem 2rem;
-  background-color: var(--card-bg);
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  transition: all 0.3s ease;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1.5rem 2rem;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: all 0.3s ease;
 }
 
 .detail img {
-  width: 100%;
-  max-height: 450px;
-  object-fit: cover;
-  border-radius: 10px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-height: 450px;
+    object-fit: contain;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.detail img:hover { transform: scale(1.02); box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+.detail img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
 
-.detail h1 { font-size: 2rem; font-weight: 700; color: var(--text-color); margin: 0; }
-.detail address { font-style: normal; color: var(--text-secondary); font-weight: 500; }
-.detail address p { margin: 0; line-height: 1.4; }
-.detail p { color: var(--text-color); line-height: 1.7; font-size: 1rem; }
+.detail h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin: 0;
+}
+.detail address {
+    font-style: normal;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+.detail address p {
+    margin: 0;
+    line-height: 1.4;
+}
+.detail p {
+    color: var(--text-color);
+    line-height: 1.7;
+    font-size: 1rem;
+}
 
-@media (max-width: 1024px) { .detail { padding: 1.5rem 1.5rem; } }
-@media (max-width: 768px) { .detail { padding: 1.2rem 1rem; gap: 1rem; } .detail h1 { font-size: 1.75rem; } .detail p { font-size: 0.95rem; } }
-@media (max-width: 480px) { .detail { padding: 1rem 0.75rem; } .detail h1 { font-size: 1.5rem; } .detail p { font-size: 0.9rem; } }
+@media (max-width: 1024px) {
+    .detail {
+        padding: 1.5rem 1.5rem;
+    }
+}
+@media (max-width: 768px) {
+    .detail {
+        padding: 1.2rem 1rem;
+        gap: 1rem;
+    }
+    .detail h1 {
+        font-size: 1.75rem;
+    }
+    .detail p {
+        font-size: 0.95rem;
+    }
+}
+@media (max-width: 480px) {
+    .detail {
+        padding: 1rem 0.75rem;
+    }
+    .detail h1 {
+        font-size: 1.5rem;
+    }
+    .detail p {
+        font-size: 0.9rem;
+    }
+}

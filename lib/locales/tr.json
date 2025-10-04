@@ -1,5 +1,6 @@
 {
     "logoAlt": "React Buluşmaları Logosu",
+    "loading": "Yükleniyor...",
     "nav": {
         "allMeetups": "Tüm Buluşmalar",
         "addNewMeetup": "Yeni Buluşma Ekle"
@@ -19,6 +20,11 @@
         "showDetails": "Detayları Göster",
         "imageAlt": "{{title}} görseli",
         "ariaLabel": "{{title}} için detayları göster"
+    },
+    "meetupDetail": {
+        "title": "Başlık:",
+        "addressLabel": "Adres:",
+        "descriptionLabel": "Açıklama:"
     },
     "toasts": {
         "imageUploadSuccess": "Görsel başarıyla yüklendi!",

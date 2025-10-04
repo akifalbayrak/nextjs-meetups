@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { ThemeContext } from "../../pages/context/ThemeContext";
+import { ThemeContext, ThemeContextType } from "../../pages/context/ThemeContext";
 import classes from "./ThemeToggle.module.css";
 
 function ThemeToggle() {
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme, toggleTheme } = useContext<ThemeContextType>(ThemeContext);
   const { t } = useTranslation();
 
   return (
