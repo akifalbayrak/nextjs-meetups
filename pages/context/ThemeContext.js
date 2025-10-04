@@ -5,7 +5,7 @@ export const ThemeContext = createContext({
   toggleTheme: () => {},
 });
 
-export function ThemeProvider({ children }) {
+export default function ThemeProvider({ children }) {
   const [theme, setTheme] = useState("light");
 
   // Sayfa yüklendiğinde localStorage'dan temayı al
