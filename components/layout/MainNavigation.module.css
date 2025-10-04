@@ -143,23 +143,6 @@
   color: #fff;
 }
 
-.navLink::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 2px;
-  width: 0%;
-  background-color: var(--primary-color);
-  border-radius: 2px;
-  transition: width 0.3s ease;
-}
-
-.navLink:hover::after,
-.navLink:focus::after {
-  width: 100%;
-}
-
 .active {
   color: #ffffff !important;
   background-color: var(--primary-color);
