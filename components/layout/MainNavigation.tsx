@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, MouseEventHandler } from "react";
 import Link from "next/link";
 import classes from "./MainNavigation.module.css";
 
@@ -12,13 +12,17 @@ function MainNavigation() {
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const toggleMenuHandler = () => {
+  const toggleMenuHandler: MouseEventHandler<HTMLButtonElement> = () => {
     setMenuOpen((prev) => !prev);
+  };
+
+  const closeMenuHandler: MouseEventHandler<HTMLAnchorElement | HTMLDivElement> = () => {
+    setMenuOpen(false);
   };
 
   return (
     <header className={classes.header}>
-      <Link href="/" className={classes.logo} onClick={() => setMenuOpen(false)}>
+      <Link href="/" onClick={closeMenuHandler} className={classes.logo}>
         <img src="/meetup.png" alt={t("logoAlt")} className={classes.logoImage} />
       </Link>
 
@@ -46,7 +50,7 @@ function MainNavigation() {
           <Link
             href="/"
             className={`${classes.navLink} ${pathname === "/" ? classes.active : ""}`}
-            onClick={() => setMenuOpen(false)}
+            onClick={closeMenuHandler}
           >
             {t("nav.allMeetups")}
           </Link>
@@ -57,7 +61,7 @@ function MainNavigation() {
             className={`${classes.navLink} ${
               pathname === "/new-meetup" ? classes.active : ""
             }`}
-            onClick={() => setMenuOpen(false)}
+            onClick={closeMenuHandler}
           >
             {t("nav.addNewMeetup")}
           </Link>

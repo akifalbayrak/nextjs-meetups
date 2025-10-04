@@ -4,14 +4,24 @@ import { Fragment } from "react";
 import Head from "next/head";
 import { useTranslation } from "react-i18next";
 
+type MeetupData = {
+    title: string;
+    image: string;
+    address: string;
+    description: string;
+};
+
 export default function NewMeetupPage() {
     const router = useRouter();
     const { t } = useTranslation();
 
-    async function addMeetupHandler(enteredMeetupData) {
+    async function addMeetupHandler(enteredMeetupData: MeetupData) {
         const response = await fetch("/api/new-meetup", {
             method: "POST",
-            body: enteredMeetupData,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(enteredMeetupData),
         });
 
         if (response.ok) {

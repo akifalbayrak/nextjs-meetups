@@ -1,5 +1,6 @@
 {
     "logoAlt": "React Meetups Logo",
+    "loading": "Loading...",
     "nav": {
         "allMeetups": "All Meetups",
         "addNewMeetup": "Add New Meetup"
@@ -16,6 +17,11 @@
         "showDetails": "Show Details",
         "imageAlt": "Image of {{title}}",
         "ariaLabel": "Show details for {{title}}"
+    },
+    "meetupDetail": {
+        "title": "Title:",
+        "addressLabel": "Address:",
+        "descriptionLabel": "Description:"
     },
     "toasts": {
         "imageUploadSuccess": "Image uploaded successfully!",
