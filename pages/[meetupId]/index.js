@@ -32,16 +32,15 @@ export async function getStaticProps(context) {
     let selectedMeetup = null;
 
     try {
-        const client = await MongoClient.connect(
-            "mongodb+srv://akif:Xa5f9stib7d72D1E@cluster0.pizeaf2.mongodb.net/meetups?retryWrites=true&w=majority&appName=Cluster0"
-        );
+        if (!process.env.MONGODB_URI) {
+            throw new Error('MONGODB_URI not set');
+        }
 
+        const client = await MongoClient.connect(process.env.MONGODB_URI);
         const db = client.db();
         const meetupsCollection = db.collection("meetups");
 
-        selectedMeetup = await meetupsCollection.findOne({
-            _id: new ObjectId(meetupId),
-        });
+        selectedMeetup = await meetupsCollection.findOne({ _id: new ObjectId(meetupId) });
 
         client.close();
     } catch (error) {
@@ -71,16 +70,17 @@ export async function getStaticPaths() {
     let meetups = [];
 
     try {
-        const client = await MongoClient.connect(
-            "mongodb+srv://akif:Xa5f9stib7d72D1E@cluster0.pizeaf2.mongodb.net/meetups?retryWrites=true&w=majority&appName=Cluster0"
-        );
+        if (process.env.MONGODB_URI) {
+            const client = await MongoClient.connect(process.env.MONGODB_URI);
+            const db = client.db();
+            const meetupsCollection = db.collection("meetups");
 
-        const db = client.db();
-        const meetupsCollection = db.collection("meetups");
+            meetups = await meetupsCollection.find({}, { projection: { _id: 1 } }).toArray();
 
-        meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
-
-        client.close();
+            client.close();
+        } else {
+            console.error('MONGODB_URI not set');
+        }
     } catch (error) {
         console.error("Error connecting to MongoDB or fetching data:", error);
     }

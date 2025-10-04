@@ -30,17 +30,25 @@ export default function HomePage(props) {
 // }
 
 export async function getStaticProps() {
-    const client = await MongoClient.connect(
-        "mongodb+srv://akif:Xa5f9stib7d72D1E@cluster0.pizeaf2.mongodb.net/meetups?retryWrites=true&w=majority&appName=Cluster0"
-    );
+    if (!process.env.MONGODB_URI) {
+        console.error('MONGODB_URI not set');
+        return { props: { meetups: [] }, revalidate: 10 };
+    }
 
-    const db = client.db();
+    let client;
+    let meetups = [];
+    try {
+        client = await MongoClient.connect(process.env.MONGODB_URI);
+        const db = client.db();
 
-    const meetupsCollection = db.collection("meetups");
+        const meetupsCollection = db.collection("meetups");
 
-    const meetups = await meetupsCollection.find().toArray();
-
-    client.close();
+        meetups = await meetupsCollection.find().toArray();
+    } catch (error) {
+        console.error('Error fetching meetups:', error);
+    } finally {
+        if (client) client.close();
+    }
 
     return {
         props: {
