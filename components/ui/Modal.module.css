@@ -1,0 +1,66 @@
+.backdrop {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  animation: fadeIn 0.25s forwards;
+}
+
+.modal {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+  z-index: 1000;
+  max-width: 90%;
+  max-height: 90%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+  opacity: 0;
+  animation: scaleIn 0.25s forwards;
+  transition: background-color 0.3s ease;
+}
+
+.closeBtn {
+  align-self: flex-end;
+  font-size: 1.8rem;
+  font-weight: bold;
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.closeBtn:hover,
+.closeBtn:focus {
+  color: var(--primary-hover);
+  outline: none;
+}
+
+.modal img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes scaleIn { to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+
+@media (max-width: 768px) {
+  .modal { max-width: 95%; padding: 0.85rem; }
+  .closeBtn { font-size: 1.6rem; }
+}
+
+@media (max-width: 480px) {
+  .modal { max-width: 98%; padding: 0.65rem; }
+  .closeBtn { font-size: 1.4rem; }
+}

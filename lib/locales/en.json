@@ -1,0 +1,44 @@
+{
+    "logoAlt": "React Meetups Logo",
+    "nav": {
+        "allMeetups": "All Meetups",
+        "addNewMeetup": "Add New Meetup"
+    },
+    "homePage":{
+        "title" : "Meetups",
+        "description" : "Discover all meetups."
+    },
+    "themeToggle": {
+        "darkMode": "Dark Mode",
+        "lightMode": "Light Mode"
+    },
+    "meetupItem": {
+        "showDetails": "Show Details",
+        "imageAlt": "Image of {{title}}",
+        "ariaLabel": "Show details for {{title}}"
+    },
+    "toasts": {
+        "imageUploadSuccess": "Image uploaded successfully!",
+        "imageUploadFail": "Image upload failed!",
+        "imageUploadError": "Image upload failed. Please try again.",
+        "waitForUpload": "Please wait for the image upload to complete before submitting.",
+        "meetupAdded": "Meetup added successfully!"
+    },
+    "newMeetupForm": {
+        "title": "Create New Meetup",
+        "description": "Create a new meetup.",
+        "labels": {
+            "meetupTitle": "Meetup Title",
+            "meetupImage": "Meetup Image",
+            "chooseFile": "Choose File",
+            "address": "Address",
+            "description": "Description"
+        },
+        "buttons": {
+            "uploading": "Uploading...",
+            "addMeetup": "Add Meetup"
+        },
+        "noFileChosen": "No file chosen",
+        "uploadedPreviewAlt": "Uploaded preview"
+    }
+}

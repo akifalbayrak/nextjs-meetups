@@ -1,0 +1,47 @@
+{
+    "logoAlt": "React Buluşmaları Logosu",
+    "nav": {
+        "allMeetups": "Tüm Buluşmalar",
+        "addNewMeetup": "Yeni Buluşma Ekle"
+    },
+    "homePage":{
+        "title" : "Buluşmalar",
+        "description" : "Tüm buluşmaları keşfedin."
+    },
+    "themeToggle": {
+        "darkMode": "Karanlık Mod",
+        "lightMode": "Aydınlık Mod"
+    },
+    "meetupList": {
+        "noMeetups": "No meetups found. Try adding some!"
+    },
+    "meetupItem": {
+        "showDetails": "Detayları Göster",
+        "imageAlt": "{{title}} görseli",
+        "ariaLabel": "{{title}} için detayları göster"
+    },
+    "toasts": {
+        "imageUploadSuccess": "Görsel başarıyla yüklendi!",
+        "imageUploadFail": "Görsel yükleme başarısız!",
+        "imageUploadError": "Görsel yükleme başarısız oldu. Lütfen tekrar deneyin.",
+        "waitForUpload": "Lütfen gönderimden önce görsel yüklemesinin tamamlanmasını bekleyin.",
+        "meetupAdded": "Buluşma başarıyla eklendi!"
+    },
+    "newMeetupForm": {
+        "title": "Yeni Buluşma Oluştur",
+        "description": "Yeni bir buluşma oluşturun.",
+        "labels": {
+            "meetupTitle": "Buluşma Başlığı",
+            "meetupImage": "Buluşma Görseli",
+            "chooseFile": "Dosya Seç",
+            "address": "Adres",
+            "description": "Açıklama"
+        },
+        "buttons": {
+            "uploading": "Yükleniyor...",
+            "addMeetup": "Buluşma Ekle"
+        },
+        "noFileChosen": "Dosya seçilmedi",
+        "uploadedPreviewAlt": "Yüklenen önizleme"
+    }
+}

@@ -1,78 +1,146 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Card from "../ui/Card";
+import Modal from "../ui/Modal";
 import classes from "./NewMeetupForm.module.css";
+import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
-function NewMeetupForm(props) {
+function NewMeetupForm({ onAddMeetup }) {
   const titleInputRef = useRef();
-  const imageInputRef = useRef();
   const addressInputRef = useRef();
   const descriptionInputRef = useRef();
+  const imageInputRef = useRef();
+  const { t } = useTranslation();
+
+  const [selectedFileName, setSelectedFileName] = useState(t("newMeetupForm.noFileChosen"));
+  const [imageUrl, setImageUrl] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
+  async function fileChangeHandler(event) {
+    if (!event.target.files.length) return;
+
+    const file = event.target.files[0];
+    setSelectedFileName(file.name);
+    setUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await fetch("/api/upload-image", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setImageUrl(data.imageUrl);
+        toast.success(t("toasts.imageUploadSuccess"));
+      } else {
+        toast.error(data.message || t("toasts.imageUploadFail"));
+      }
+    } catch (error) {
+      toast.error(t("toasts.imageUploadError"));
+    } finally {
+      setUploading(false);
+    }
+  }
 
   function submitHandler(event) {
     event.preventDefault();
 
-    const meetupData = new FormData();
-    meetupData.append("title", titleInputRef.current.value);
-    meetupData.append("address", addressInputRef.current.value);
-    meetupData.append("description", descriptionInputRef.current.value);
-
-    if (imageInputRef.current.files.length > 0) {
-      meetupData.append("image", imageInputRef.current.files[0]);
-    } else {
-      console.error("Dosya seçilmemiş veya ref hatalı");
+    if (!imageUrl) {
+      toast.error(t("toasts.waitForUpload"));
+      return;
     }
 
-    props.onAddMeetup(meetupData);
+    const meetupData = {
+      title: titleInputRef.current.value,
+      address: addressInputRef.current.value,
+      description: descriptionInputRef.current.value,
+      image: imageUrl,
+    };
+
+    onAddMeetup(JSON.stringify(meetupData));
+    toast.success(t("toasts.meetupAdded"));
   }
 
   return (
-    <Card>
-      <form className={classes.form} onSubmit={submitHandler}>
-        <div className={classes.control}>
-          <label htmlFor="title">Meetup Title</label>
-          <input
-            type="text"
-            required
-            id="title"
-            name="title"
-            ref={titleInputRef}
-          />
-        </div>
-        <div className={classes.control}>
-          <label htmlFor="image">Meetup Image</label>
-          <input
-            type="file"
-            required
-            id="image"
-            name="image"
-            ref={imageInputRef}
-          />
-        </div>
-        <div className={classes.control}>
-          <label htmlFor="address">Address</label>
-          <input
-            type="text"
-            required
-            id="address"
-            name="address"
-            ref={addressInputRef}
-          />
-        </div>
-        <div className={classes.control}>
-          <label htmlFor="description">Description</label>
-          <textarea
-            id="description"
-            name="description"
-            required
-            rows="5"
-            ref={descriptionInputRef}
-          ></textarea>
-        </div>
-        <div className={classes.actions}>
-          <button>Add Meetup</button>
-        </div>
-      </form>
-    </Card>
+    <>
+      <Card>
+        <form className={classes.form} onSubmit={submitHandler}>
+          <h2 className={classes.title}>{t("newMeetupForm.title")}</h2>
+
+          <div className={classes.control}>
+            <label htmlFor="title">{t("newMeetupForm.labels.meetupTitle")}</label>
+            <input type="text" id="title" required ref={titleInputRef} />
+          </div>
+
+          <div className={classes.control}>
+            <label htmlFor="image">{t("newMeetupForm.labels.meetupImage")}</label>
+            <div className={classes.fileInputWrapper}>
+              <input
+                type="file"
+                id="image"
+                accept="image/png, image/jpeg"
+                ref={imageInputRef}
+                onChange={fileChangeHandler}
+                style={{ display: "none" }}
+              />
+              <button
+                type="button"
+                className={classes.fileButton}
+                onClick={() => imageInputRef.current.click()}
+              >
+                {t("newMeetupForm.labels.chooseFile")}
+              </button>
+              <span className={classes.fileName}>
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt={t("newMeetupForm.uploadedPreviewAlt")}
+                    className={classes.inlinePreview}
+                    style={{ cursor: "pointer" }}
+                    onClick={openModal}
+                  />
+                ) : (
+                  selectedFileName
+                )}
+              </span>
+            </div>
+          </div>
+
+          <div className={classes.control}>
+            <label htmlFor="address">{t("newMeetupForm.labels.address")}</label>
+            <input type="text" id="address" required ref={addressInputRef} />
+          </div>
+
+          <div className={classes.control}>
+            <label htmlFor="description">{t("newMeetupForm.labels.description")}</label>
+            <textarea id="description" rows="5" required ref={descriptionInputRef}></textarea>
+          </div>
+
+          <div className={classes.actions}>
+            <button type="submit" disabled={uploading}>
+              {uploading ? t("newMeetupForm.buttons.uploading") : t("newMeetupForm.buttons.addMeetup")}
+            </button>
+          </div>
+        </form>
+      </Card>
+
+      {modalOpen && (
+        <Modal
+          onClose={closeModal}
+          image={imageUrl}
+          title={selectedFileName || t("newMeetupForm.labels.meetupImage")}
+        />
+      )}
+    </>
   );
 }
 

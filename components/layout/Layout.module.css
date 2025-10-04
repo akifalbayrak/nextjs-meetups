@@ -1,5 +1,23 @@
 .main {
-  margin: 3rem auto;
-  width: 90%;
-  max-width: 40rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--text-color);
+  line-height: 1.6;
+  padding: 2rem 1rem;
+  transition: all 0.3s ease;
 }
+
+@media (max-width: 1024px) { .main { max-width: 1000px; } }
+@media (max-width: 768px) { .main { max-width: 95%; padding: 1.5rem; } }
+@media (max-width: 480px) { .main { font-size: 0.95rem; padding: 1rem; } }
+
+.main > *:first-child { margin-top: 0; }
+.main > *:last-child { margin-bottom: 0; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.main { animation: fadeIn 0.3s ease-in-out; }
