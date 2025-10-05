@@ -57,10 +57,11 @@
 }
 
 .selected {
-  background-color: var(--primary-color);
-  font-weight: 700;
+    color: #ffffff !important;
+    background-color: var(--primary-color);
+    font-weight: 600;
+    box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.15);
 }
-
 
 @keyframes slideDown {
   0% {
